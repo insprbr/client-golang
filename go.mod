@@ -1,4 +1,4 @@
-module gitlab.inspr.com/chimera/client/client_go
+module gitlab.inspr.com/chimera/client-golang
 
 go 1.13
 
