@@ -73,7 +73,7 @@ func (w *Writer) WriteMessage(message interface{}, channel string) error {
 	go deliveryReport(w.producer)
 
 	// Kafka insertion
-	if errProduceMessage := w.produceMessage(message, envs.chimeraNamespace+"_"+channel); errProduceMessage != nil {
+	if errProduceMessage := w.produceMessage(message, channel); errProduceMessage != nil {
 		return errProduceMessage
 	}
 
