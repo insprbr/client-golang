@@ -7,15 +7,21 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-// Reader struct
-type Reader struct {
+type reader struct {
 	consumer    *kafka.Consumer
 	lastMessage *kafka.Message
-	logger      *Logger
+	logger      Logger
+}
+
+// Reader reads messages from Chimera
+type Reader interface {
+	Commit() error
+	ReadMessage() (*string, interface{}, error)
+	Close()
 }
 
 // Commit commits the last message read by Reader
-func (r *Reader) Commit() error {
+func (r *reader) Commit() error {
 	_, errCommit := r.consumer.CommitMessage(r.lastMessage)
 	if errCommit != nil {
 		return errors.New("[READER_COMMIT] " + errCommit.Error())
@@ -26,7 +32,7 @@ func (r *Reader) Commit() error {
 //
 // ReadMessage reads message by message
 // Returns channel the message belongs to, the message and an error if any occured.
-func (r *Reader) ReadMessage() (*string, interface{}, error) {
+func (r *reader) ReadMessage() (*string, interface{}, error) {
 
 	for {
 		select {
@@ -65,16 +71,16 @@ func (r *Reader) ReadMessage() (*string, interface{}, error) {
 	}
 }
 
-// Close Reader consumer
-func (r *Reader) Close() {
+// Close reader consumer
+func (r *reader) Close() {
 	r.consumer.Close()
 }
 
-// NewReader returns a new Reader
-func NewReader() (*Reader, error) {
-
+// NewReader returns a new reader
+func NewReader() (Reader, error) {
+	envs = getEnvVars()
 	// Reader consumer Client
-	var reader Reader
+	var r reader
 
 	newConsumer, errKafkaConsumer := kafka.NewConsumer(&kafka.ConfigMap{
 		"bootstrap.servers":  envs.kafkaBootstrapServers,
@@ -85,14 +91,14 @@ func NewReader() (*Reader, error) {
 	if errKafkaConsumer != nil {
 		return nil, errors.New("[NEW READER] " + errKafkaConsumer.Error())
 	}
-	reader.consumer = newConsumer
+	r.consumer = newConsumer
 
 	// Logger
 	newLogger, errNewLogger := NewLogger()
 	if errNewLogger != nil {
 		return nil, errors.New("[NEW READER] " + errNewLogger.Error())
 	}
-	reader.logger = newLogger
+	r.logger = newLogger
 
 	// Get channels to consume and subscribe
 	listOfChannels := envs.chimeraInputChannels
@@ -106,7 +112,7 @@ func NewReader() (*Reader, error) {
 		}
 		return ret
 	}()
-	reader.consumer.SubscribeTopics(channelsToConsume, nil)
+	r.consumer.SubscribeTopics(channelsToConsume, nil)
 
-	return &reader, nil
+	return &r, nil
 }

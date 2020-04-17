@@ -39,7 +39,3 @@ func getEnv(name string) string {
 }
 
 var envs *Env
-
-func init() {
-	envs = getEnvVars()
-}
