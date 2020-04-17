@@ -8,13 +8,17 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-// Writer struct
-type Writer struct {
+type writer struct {
 	producer *kafka.Producer
-	logger   *Logger
+	logger   Logger
 }
 
-func (w *Writer) produceMessage(message interface{}, channel string) error {
+// Writer writes messages to Chimera channels
+type Writer interface {
+	WriteMessage(interface{}, string) error
+}
+
+func (w *writer) produceMessage(message interface{}, channel string) error {
 
 	messageEncoded, errorEncode := encode(message, channel)
 	if errorEncode != nil {
@@ -62,8 +66,7 @@ func validChannel(channel string, outputChannels []string) bool {
 }
 
 // WriteMessage writes a message on kafka
-func (w *Writer) WriteMessage(message interface{}, channel string) error {
-
+func (w *writer) WriteMessage(message interface{}, channel string) error {
 	// TODO Check if it's a valid channel
 	outputChannels := strings.Split(envs.chimeraOutputChannels, ";")
 	if !validChannel(channel, outputChannels) {
@@ -73,7 +76,7 @@ func (w *Writer) WriteMessage(message interface{}, channel string) error {
 	go deliveryReport(w.producer)
 
 	// Kafka insertion
-	if errProduceMessage := w.produceMessage(message, envs.chimeraNamespace+"_"+channel); errProduceMessage != nil {
+	if errProduceMessage := w.produceMessage(message, channel); errProduceMessage != nil {
 		return errProduceMessage
 	}
 
@@ -87,14 +90,14 @@ func (w *Writer) WriteMessage(message interface{}, channel string) error {
 }
 
 // Close wtriter producer
-func (w *Writer) Close() {
+func (w *writer) Close() {
 	w.producer.Close()
 }
 
-// NewWriter returns a new Writer
-func NewWriter() (*Writer, error) {
-
-	var writer Writer
+// NewWriter returns a new writer
+func NewWriter() (Writer, error) {
+	envs = getEnvVars()
+	var w writer
 
 	// Kafka Producer Client
 	newProducer, errKfkProducer := kafka.NewProducer(&kafka.ConfigMap{
@@ -104,14 +107,14 @@ func NewWriter() (*Writer, error) {
 	if errKfkProducer != nil {
 		return nil, errors.New("[NEW WRITER] " + errKfkProducer.Error())
 	}
-	writer.producer = newProducer
+	w.producer = newProducer
 
 	// Logger
 	newLogger, errNewLogger := NewLogger()
 	if errNewLogger != nil {
 		return nil, errors.New("[NEW WRITER] " + errNewLogger.Error())
 	}
-	writer.logger = newLogger
+	w.logger = newLogger
 
-	return &writer, nil
+	return &w, nil
 }

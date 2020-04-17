@@ -8,13 +8,17 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
-// Logger struct
-type Logger struct {
+type logger struct {
 	producer   *kafka.Producer
 	logChannel string
 }
 
-func (l *Logger) produceLog(log interface{}) error {
+// Logger struct
+type Logger interface {
+	WriteLog(interface{}, string) error
+}
+
+func (l *logger) produceLog(log interface{}) error {
 
 	// Get schema from channel
 	schema, errGetSchema := getLogSchema()
@@ -58,7 +62,7 @@ func (l *Logger) produceLog(log interface{}) error {
 }
 
 // WriteLog writes a log on kafka
-func (l *Logger) WriteLog(message interface{}, action string) error {
+func (l *logger) WriteLog(message interface{}, action string) error {
 
 	go deliveryReport(l.producer)
 
@@ -81,9 +85,9 @@ func (l *Logger) WriteLog(message interface{}, action string) error {
 }
 
 // NewLogger retuns a Logger
-func NewLogger() (*Logger, error) {
+func NewLogger() (Logger, error) {
 
-	var logger Logger
+	var l logger
 
 	// Kafka Log Producer Client
 	newLogProducer, errKfkLogProducer := kafka.NewProducer(&kafka.ConfigMap{
@@ -92,8 +96,8 @@ func NewLogger() (*Logger, error) {
 	if errKfkLogProducer != nil {
 		return nil, errors.New("[LOG PRODUCER] " + errKfkLogProducer.Error())
 	}
-	logger.producer = newLogProducer
-	logger.logChannel = envs.chimeraLogChannel
+	l.producer = newLogProducer
+	l.logChannel = envs.chimeraLogChannel
 
-	return &logger, nil
+	return &l, nil
 }
