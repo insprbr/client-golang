@@ -9,15 +9,15 @@ import (
 	"github.com/linkedin/goavro"
 )
 
-func getSchema(channel string) (*string, error) {
+func getSchema(ch channel) (*string, error) {
 
 	// Getting schema
-	resp, errGetSchema := http.Get(envs.chimeraRegistryURL + "/schema/" + envs.chimeraNamespace + "/" + channel)
+	resp, errGetSchema := http.Get(envs.chimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
 	if errGetSchema != nil {
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] " + errGetSchema.Error())
 	}
 	if resp.StatusCode != 200 {
-		log.Println(envs.chimeraRegistryURL + "/schema/" + envs.chimeraNamespace + "/" + channel)
+		log.Println(envs.chimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] Schema not registered. ")
 	}
 	defer resp.Body.Close()
@@ -67,10 +67,10 @@ func getCodec(schema string) (*goavro.Codec, error) {
 	return codec, nil
 }
 
-func decode(messageEncoded []byte, channel string) (interface{}, error) {
+func decode(messageEncoded []byte, ch channel) (interface{}, error) {
 
-	// Get schema from channel
-	schema, errGetSchema := getSchema(channel[len(envs.chimeraNamespace)+1:])
+	// Get schema from ch
+	schema, errGetSchema := getSchema(ch)
 	if errGetSchema != nil {
 		return nil, errGetSchema
 	}
@@ -93,10 +93,10 @@ func decode(messageEncoded []byte, channel string) (interface{}, error) {
 	return message, nil
 }
 
-func encode(message interface{}, channel string) ([]byte, error) {
+func encode(message interface{}, ch channel) ([]byte, error) {
 
-	// Get schema from channel
-	schema, errGetSchema := getSchema(channel)
+	// Get schema from ch
+	schema, errGetSchema := getSchema(ch)
 	if errGetSchema != nil {
 		return nil, errGetSchema
 	}

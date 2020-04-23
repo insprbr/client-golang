@@ -45,7 +45,7 @@ func (r *reader) ReadMessage() (*string, interface{}, error) {
 				channel := *e.TopicPartition.Topic
 
 				// Decoding Message
-				message, errDecode := decode(e.Value, channel)
+				message, errDecode := decode(e.Value, fromTopic(channel))
 				if errDecode != nil {
 					return nil, nil, errDecode
 				}

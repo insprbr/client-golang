@@ -12,6 +12,7 @@ type Env struct {
 	chimeraInputChannels  string
 	chimeraOutputChannels string
 	chimeraLogChannel     string
+	chimeraEnvironment    string
 
 	kafkaBootstrapServers string
 	kafkaAutoOffsetReset  string
@@ -28,6 +29,28 @@ func getEnvVars() *Env {
 		chimeraOutputChannels: getEnv("CHIMERA_OUTPUT_CHANNELS"),
 		kafkaBootstrapServers: getEnv("KAFKA_BOOTSTRAP_SERVERS"),
 		kafkaAutoOffsetReset:  getEnv("KAFKA_AUTO_OFFSET_RESET"),
+		chimeraEnvironment:    getEnv("CHIMERA_ENVIRONMENT"),
+	}
+}
+func testEnvVars(
+	name string,
+	namespace string,
+	log string,
+	registry string,
+	input string,
+	output string,
+	environment string,
+) *Env {
+	return &Env{
+		chimeraNodeID:         name,
+		chimeraNamespace:      namespace,
+		chimeraLogChannel:     log,
+		chimeraRegistryURL:    registry,
+		chimeraInputChannels:  input,
+		chimeraOutputChannels: output,
+		kafkaBootstrapServers: "kafka",
+		kafkaAutoOffsetReset:  "latest",
+		chimeraEnvironment:    environment,
 	}
 }
 
