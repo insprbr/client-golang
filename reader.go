@@ -78,7 +78,7 @@ func (r *reader) Close() {
 
 // NewReader returns a new reader
 func NewReader() (Reader, error) {
-	envs = getEnvVars()
+	envs = GetEnvVars()
 	// Reader consumer Client
 	var r reader
 

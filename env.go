@@ -19,7 +19,8 @@ type Env struct {
 	kafkaEnableAutoCommit string
 }
 
-func getEnvVars() *Env {
+// GetEnvVars returns a struct with all Chimera envirnoment variables
+func GetEnvVars() *Env {
 	return &Env{
 		chimeraNodeID:         getEnv("CHIMERA_NODE_ID"),
 		chimeraNamespace:      getEnv("CHIMERA_NAMESPACE"),

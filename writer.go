@@ -101,7 +101,7 @@ func (w *writer) Close() {
 
 // NewWriter returns a new writer
 func NewWriter() (Writer, error) {
-	envs = getEnvVars()
+	envs = GetEnvVars()
 	var w writer
 
 	// Kafka Producer Client
