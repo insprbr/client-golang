@@ -22,8 +22,8 @@ func (w *writer) produceMessage(message interface{}, chann string) error {
 
 	ch := channel{
 		name:      chann,
-		namespace: envs.chimeraNamespace,
-		prefix:    envs.chimeraEnvironment,
+		namespace: envs.ChimeraNamespace,
+		prefix:    envs.ChimeraEnvironment,
 	}
 	messageEncoded, errorEncode := encode(message, ch)
 	if errorEncode != nil {
@@ -73,7 +73,7 @@ func validChannel(channel string, outputChannels []string) bool {
 // WriteMessage writes a message on kafka
 func (w *writer) WriteMessage(message interface{}, channel string) error {
 	// TODO Check if it's a valid channel
-	outputChannels := strings.Split(envs.chimeraOutputChannels, ";")
+	outputChannels := strings.Split(envs.ChimeraOutputChannels, ";")
 	if !validChannel(channel, outputChannels) {
 		return errors.New("[OUTPUT CHANNEL] Invalid channel. ")
 	}
@@ -106,7 +106,7 @@ func NewWriter() (Writer, error) {
 
 	// Kafka Producer Client
 	newProducer, errKfkProducer := kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": envs.kafkaBootstrapServers,
+		"bootstrap.servers": envs.KafkaBootstrapServers,
 	})
 
 	if errKfkProducer != nil {

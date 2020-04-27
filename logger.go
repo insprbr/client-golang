@@ -91,13 +91,13 @@ func NewLogger() (Logger, error) {
 
 	// Kafka Log Producer Client
 	newLogProducer, errKfkLogProducer := kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": envs.kafkaBootstrapServers,
+		"bootstrap.servers": envs.KafkaBootstrapServers,
 	})
 	if errKfkLogProducer != nil {
 		return nil, errors.New("[LOG PRODUCER] " + errKfkLogProducer.Error())
 	}
 	l.producer = newLogProducer
-	l.logChannel = envs.chimeraLogChannel
+	l.logChannel = envs.ChimeraLogChannel
 
 	return &l, nil
 }

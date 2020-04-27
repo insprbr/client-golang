@@ -83,9 +83,9 @@ func NewReader() (Reader, error) {
 	var r reader
 
 	newConsumer, errKafkaConsumer := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers":  envs.kafkaBootstrapServers,
-		"group.id":           envs.chimeraNodeID,
-		"auto.offset.reset":  envs.kafkaAutoOffsetReset,
+		"bootstrap.servers":  envs.KafkaBootstrapServers,
+		"group.id":           envs.ChimeraNodeID,
+		"auto.offset.reset":  envs.KafkaAutoOffsetReset,
 		"enable.auto.commit": false,
 	})
 	if errKafkaConsumer != nil {
@@ -101,14 +101,14 @@ func NewReader() (Reader, error) {
 	r.logger = newLogger
 
 	// Get channels to consume and subscribe
-	listOfChannels := envs.chimeraInputChannels
+	listOfChannels := envs.ChimeraInputChannels
 	if listOfChannels == "" {
 		return nil, errors.New("[ENV VAR] KAFKA_INPUT_CHANNELS not specified. ")
 	}
 	channelsToConsume := func() []string {
 		ret := []string{}
 		for _, s := range strings.Split(listOfChannels, ";") {
-			ret = append(ret, envs.chimeraNamespace+"_"+s)
+			ret = append(ret, toTopic(s))
 		}
 		return ret
 	}()

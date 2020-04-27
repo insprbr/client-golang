@@ -12,12 +12,12 @@ import (
 func getSchema(ch channel) (*string, error) {
 
 	// Getting schema
-	resp, errGetSchema := http.Get(envs.chimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
+	resp, errGetSchema := http.Get(envs.ChimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
 	if errGetSchema != nil {
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] " + errGetSchema.Error())
 	}
 	if resp.StatusCode != 200 {
-		log.Println(envs.chimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
+		log.Println(envs.ChimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] Schema not registered. ")
 	}
 	defer resp.Body.Close()
@@ -36,7 +36,7 @@ func getSchema(ch channel) (*string, error) {
 func getLogSchema() (*string, error) {
 
 	// Getting schema
-	resp, errGetSchema := http.Get(envs.chimeraRegistryURL + "/schema/" + "chimera" + "/" + "log")
+	resp, errGetSchema := http.Get(envs.ChimeraRegistryURL + "/schema/" + "chimera" + "/" + "log")
 	if errGetSchema != nil {
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] " + errGetSchema.Error())
 	}

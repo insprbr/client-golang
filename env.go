@@ -6,31 +6,30 @@ import (
 
 // Env vars struct
 type Env struct {
-	chimeraNodeID         string
-	chimeraNamespace      string
-	chimeraRegistryURL    string
-	chimeraInputChannels  string
-	chimeraOutputChannels string
-	chimeraLogChannel     string
-	chimeraEnvironment    string
+	ChimeraNodeID         string
+	ChimeraNamespace      string
+	ChimeraRegistryURL    string
+	ChimeraInputChannels  string
+	ChimeraOutputChannels string
+	ChimeraLogChannel     string
+	ChimeraEnvironment    string
 
-	kafkaBootstrapServers string
-	kafkaAutoOffsetReset  string
-	kafkaEnableAutoCommit string
+	KafkaBootstrapServers string
+	KafkaAutoOffsetReset  string
 }
 
 // GetEnvVars returns a struct with all Chimera envirnoment variables
 func GetEnvVars() *Env {
 	return &Env{
-		chimeraNodeID:         getEnv("CHIMERA_NODE_ID"),
-		chimeraNamespace:      getEnv("CHIMERA_NAMESPACE"),
-		chimeraLogChannel:     getEnv("CHIMERA_LOG_CHANNEL"),
-		chimeraRegistryURL:    getEnv("CHIMERA_REGISTRY_URL"),
-		chimeraInputChannels:  getEnv("CHIMERA_INPUT_CHANNELS"),
-		chimeraOutputChannels: getEnv("CHIMERA_OUTPUT_CHANNELS"),
-		kafkaBootstrapServers: getEnv("KAFKA_BOOTSTRAP_SERVERS"),
-		kafkaAutoOffsetReset:  getEnv("KAFKA_AUTO_OFFSET_RESET"),
-		chimeraEnvironment:    getEnv("CHIMERA_ENVIRONMENT"),
+		ChimeraNodeID:         getEnv("CHIMERA_NODE_ID"),
+		ChimeraNamespace:      getEnv("CHIMERA_NAMESPACE"),
+		ChimeraLogChannel:     getEnv("CHIMERA_LOG_CHANNEL"),
+		ChimeraRegistryURL:    getEnv("CHIMERA_REGISTRY_URL"),
+		ChimeraInputChannels:  getEnv("CHIMERA_INPUT_CHANNELS"),
+		ChimeraOutputChannels: getEnv("CHIMERA_OUTPUT_CHANNELS"),
+		KafkaBootstrapServers: getEnv("KAFKA_BOOTSTRAP_SERVERS"),
+		KafkaAutoOffsetReset:  getEnv("KAFKA_AUTO_OFFSET_RESET"),
+		ChimeraEnvironment:    getEnv("CHIMERA_ENVIRONMENT"),
 	}
 }
 func testEnvVars(
@@ -43,15 +42,15 @@ func testEnvVars(
 	environment string,
 ) *Env {
 	return &Env{
-		chimeraNodeID:         name,
-		chimeraNamespace:      namespace,
-		chimeraLogChannel:     log,
-		chimeraRegistryURL:    registry,
-		chimeraInputChannels:  input,
-		chimeraOutputChannels: output,
-		kafkaBootstrapServers: "kafka",
-		kafkaAutoOffsetReset:  "latest",
-		chimeraEnvironment:    environment,
+		ChimeraNodeID:         name,
+		ChimeraNamespace:      namespace,
+		ChimeraLogChannel:     log,
+		ChimeraRegistryURL:    registry,
+		ChimeraInputChannels:  input,
+		ChimeraOutputChannels: output,
+		KafkaBootstrapServers: "kafka",
+		KafkaAutoOffsetReset:  "latest",
+		ChimeraEnvironment:    environment,
 	}
 }
 

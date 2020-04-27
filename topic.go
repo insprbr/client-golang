@@ -12,8 +12,8 @@ type channel struct {
 
 func fromTopic(topic string) channel {
 	ch := channel{
-		namespace: envs.chimeraNamespace,
-		prefix:    envs.chimeraEnvironment,
+		namespace: envs.ChimeraNamespace,
+		prefix:    envs.ChimeraEnvironment,
 	}
 
 	if ch.prefix == "" {
@@ -27,14 +27,14 @@ func fromTopic(topic string) channel {
 func toTopic(ch string) string {
 	var topic string
 
-	if envs.chimeraEnvironment == "" {
-		topic = fmt.Sprintf("chimera-%s-%s", envs.chimeraNamespace, envs.chimeraNodeID)
+	if envs.ChimeraEnvironment == "" {
+		topic = fmt.Sprintf("chimera-%s-%s", envs.ChimeraNamespace, envs.ChimeraNodeID)
 	} else {
 		topic = fmt.Sprintf(
 			"chimera-%s-%s-%s",
-			envs.chimeraEnvironment,
-			envs.chimeraNamespace,
-			envs.chimeraNodeID,
+			envs.ChimeraEnvironment,
+			envs.ChimeraNamespace,
+			envs.ChimeraNodeID,
 		)
 	}
 
