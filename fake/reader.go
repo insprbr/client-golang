@@ -40,5 +40,7 @@ func (r *reader) Close() {
 
 // NewSimpleReader creates a simple reader that just alters objects
 func NewSimpleReader(chans []string) client.Reader {
-	return &reader{}
+	return &reader{
+		chans: chans,
+	}
 }
