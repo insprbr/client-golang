@@ -28,10 +28,10 @@ func toTopic(ch string) string {
 	var topic string
 
 	if envs.ChimeraEnvironment == "" {
-		topic = fmt.Sprintf("chimera-%s-%s", envs.ChimeraNamespace, envs.ChimeraNodeID)
+		topic = fmt.Sprintf("chimera_%s_%s", envs.ChimeraNamespace, envs.ChimeraNodeID)
 	} else {
 		topic = fmt.Sprintf(
-			"chimera-%s-%s-%s",
+			"chimera_%s_%s_%s",
 			envs.ChimeraEnvironment,
 			envs.ChimeraNamespace,
 			envs.ChimeraNodeID,
