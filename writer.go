@@ -18,19 +18,24 @@ type Writer interface {
 	WriteMessage(interface{}, string) error
 }
 
-func (w *writer) produceMessage(message interface{}, channel string) error {
+func (w *writer) produceMessage(message interface{}, chann string) error {
 
-	messageEncoded, errorEncode := encode(message, channel)
+	ch := channel{
+		name:      chann,
+		namespace: envs.ChimeraNamespace,
+		prefix:    envs.ChimeraEnvironment,
+	}
+	messageEncoded, errorEncode := encode(message, ch)
 	if errorEncode != nil {
 		return errorEncode
 	}
 
-	channel = envs.chimeraNamespace + "_" + channel
+	topic := toTopic(chann)
 
 	// Producing message
 	w.producer.ProduceChannel() <- &kafka.Message{
 		TopicPartition: kafka.TopicPartition{
-			Topic:     &channel,
+			Topic:     &topic,
 			Partition: kafka.PartitionAny,
 		},
 		Value: messageEncoded,
@@ -68,7 +73,7 @@ func validChannel(channel string, outputChannels []string) bool {
 // WriteMessage writes a message on kafka
 func (w *writer) WriteMessage(message interface{}, channel string) error {
 	// TODO Check if it's a valid channel
-	outputChannels := strings.Split(envs.chimeraOutputChannels, ";")
+	outputChannels := strings.Split(envs.ChimeraOutputChannels, ";")
 	if !validChannel(channel, outputChannels) {
 		return errors.New("[OUTPUT CHANNEL] Invalid channel. ")
 	}
@@ -96,12 +101,12 @@ func (w *writer) Close() {
 
 // NewWriter returns a new writer
 func NewWriter() (Writer, error) {
-	envs = getEnvVars()
+	envs = GetEnvVars()
 	var w writer
 
 	// Kafka Producer Client
 	newProducer, errKfkProducer := kafka.NewProducer(&kafka.ConfigMap{
-		"bootstrap.servers": envs.kafkaBootstrapServers,
+		"bootstrap.servers": envs.KafkaBootstrapServers,
 	})
 
 	if errKfkProducer != nil {

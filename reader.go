@@ -45,7 +45,7 @@ func (r *reader) ReadMessage() (*string, interface{}, error) {
 				channel := *e.TopicPartition.Topic
 
 				// Decoding Message
-				message, errDecode := decode(e.Value, channel)
+				message, errDecode := decode(e.Value, fromTopic(channel))
 				if errDecode != nil {
 					return nil, nil, errDecode
 				}
@@ -78,14 +78,14 @@ func (r *reader) Close() {
 
 // NewReader returns a new reader
 func NewReader() (Reader, error) {
-	envs = getEnvVars()
+	envs = GetEnvVars()
 	// Reader consumer Client
 	var r reader
 
 	newConsumer, errKafkaConsumer := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers":  envs.kafkaBootstrapServers,
-		"group.id":           envs.chimeraNodeID,
-		"auto.offset.reset":  envs.kafkaAutoOffsetReset,
+		"bootstrap.servers":  envs.KafkaBootstrapServers,
+		"group.id":           envs.ChimeraNodeID,
+		"auto.offset.reset":  envs.KafkaAutoOffsetReset,
 		"enable.auto.commit": false,
 	})
 	if errKafkaConsumer != nil {
@@ -101,14 +101,14 @@ func NewReader() (Reader, error) {
 	r.logger = newLogger
 
 	// Get channels to consume and subscribe
-	listOfChannels := envs.chimeraInputChannels
+	listOfChannels := envs.ChimeraInputChannels
 	if listOfChannels == "" {
 		return nil, errors.New("[ENV VAR] KAFKA_INPUT_CHANNELS not specified. ")
 	}
 	channelsToConsume := func() []string {
 		ret := []string{}
 		for _, s := range strings.Split(listOfChannels, ";") {
-			ret = append(ret, envs.chimeraNamespace+"_"+s)
+			ret = append(ret, toTopic(s))
 		}
 		return ret
 	}()
