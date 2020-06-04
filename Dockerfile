@@ -11,7 +11,7 @@ RUN apk update && \
 
 RUN git clone https://github.com/edenhill/librdkafka.git && \
     cd librdkafka && \
-    ./configure --prefix /usr -tags musl && \
+    ./configure --prefix /usr && \
     make && \
     make install
 

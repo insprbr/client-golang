@@ -17,9 +17,9 @@ func fromTopic(topic string) channel {
 	}
 
 	if ch.prefix == "" {
-		ch.name = topic[len("chimera_"+ch.namespace+"_"):]
+		ch.name = topic[len("chimera-"+ch.namespace+"-"):]
 	} else {
-		ch.name = topic[len("chimera_"+ch.prefix+"_"+ch.namespace+"_"):]
+		ch.name = topic[len("chimera-"+ch.prefix+"-"+ch.namespace+"-"):]
 	}
 	return ch
 }
@@ -28,10 +28,10 @@ func toTopic(ch string) string {
 	var topic string
 
 	if envs.ChimeraEnvironment == "" {
-		topic = fmt.Sprintf("chimera_%s_%s", envs.ChimeraNamespace, envs.ChimeraNodeID)
+		topic = fmt.Sprintf("chimera-%s-%s", envs.ChimeraNamespace, envs.ChimeraNodeID)
 	} else {
 		topic = fmt.Sprintf(
-			"chimera_%s_%s_%s",
+			"chimera-%s-%s-%s",
 			envs.ChimeraEnvironment,
 			envs.ChimeraNamespace,
 			envs.ChimeraNodeID,
