@@ -31,7 +31,6 @@ func GetEnvVars() *Env {
 		KafkaBootstrapServers: getEnv("KAFKA_BOOTSTRAP_SERVERS"),
 		KafkaAutoOffsetReset:  getEnv("KAFKA_AUTO_OFFSET_RESET"),
 		ChimeraEnvironment:    getEnv("CHIMERA_ENVIRONMENT"),
-		ChimeraPrefix:         getEnv("CHIMERA_PREFIX"),
 	}
 }
 func testEnvVars(
