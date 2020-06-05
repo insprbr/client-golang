@@ -106,9 +106,11 @@ func NewReader() (Reader, error) {
 	if listOfChannels == "" {
 		return nil, errors.New("[ENV VAR] KAFKA_INPUT_CHANNELS not specified. ")
 	}
+	channelList := strings.Split(listOfChannels, ";")
+	channelList = channelList[:len(channelList)-1]
 	channelsToConsume := func() []string {
 		ret := []string{}
-		for _, s := range strings.Split(listOfChannels, ";") {
+		for _, s := range channelList {
 			topic := toTopic(s)
 			log.Println(topic)
 			ret = append(ret, topic)
