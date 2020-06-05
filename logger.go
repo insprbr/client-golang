@@ -21,13 +21,28 @@ type Logger interface {
 func (l *logger) produceLog(log interface{}) error {
 
 	// Get schema from channel
-	schema, errGetSchema := getLogSchema()
-	if errGetSchema != nil {
-		return errGetSchema
-	}
+	schema := `{
+		"name": "MyClass",
+		"type": "record",
+		"namespace": "com.acme.avro",
+		"fields": [
+		  {
+			"name": "action",
+			"type": "string"
+		  },
+		  {
+			"name": "size",
+			"type": "int"
+		  },
+		  {
+			"name": "timestamp",
+			"type": "string"
+		  }
+		]
+	  }`
 
 	// Get codec from schema
-	codec, errCreateCodec := getCodec(*schema)
+	codec, errCreateCodec := getCodec(schema)
 	if errCreateCodec != nil {
 		return errCreateCodec
 	}

@@ -44,7 +44,7 @@ func (r *reader) ReadMessage() (*string, interface{}, error) {
 			case *kafka.Message:
 
 				channel := *e.TopicPartition.Topic
-
+				log.Println("reading message from channel " + channel)
 				// Decoding Message
 				message, errDecode := decode(e.Value, fromTopic(channel))
 				if errDecode != nil {
