@@ -65,6 +65,8 @@ func (r *reader) ReadMessage() (*string, interface{}, error) {
 				if e.Code() == kafka.ErrAllBrokersDown {
 					return nil, nil, errors.New("[FATAL_ERROR]\n===== All brokers are down! =====\n" + e.Error())
 				}
+				log.Println(e)
+
 			default:
 				continue
 			}
