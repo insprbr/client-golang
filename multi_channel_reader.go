@@ -30,7 +30,7 @@ func NewMultiChannelReader() (MultiChannelReader, error) {
 		envs = GetEnvVars()
 		log.Println("environment:")
 		prettyEnviron, _ := json.MarshalIndent(envs, "", "\t")
-		log.Println(prettyEnviron)
+		log.Println(string(prettyEnviron))
 		// Get channels to consume and subscribe
 		listOfChannels := envs.ChimeraInputChannels
 		if listOfChannels == "" {
@@ -55,7 +55,8 @@ func NewMultiChannelReader() (MultiChannelReader, error) {
 func (r *multiChannelReader) ReadMessage(c string) (interface{}, error) {
 	singleReader, ok := r.readers[c]
 	if !ok {
-		return nil, errors.New("[CLIENT] invalid channel in multi channel reader")
+
+		return nil, errors.New("[CLIENT] invalid channel in multi channel reader - " + c)
 	}
 	_, message, err := singleReader.ReadMessage()
 	return message, err
