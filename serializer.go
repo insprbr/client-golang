@@ -18,6 +18,7 @@ func getSchema(ch channel) (*string, error) {
 	}
 	if resp.StatusCode != 200 {
 		log.Println(envs.ChimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
+		log.Println(resp.StatusCode)
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] Schema not registered. ")
 	}
 	defer resp.Body.Close()

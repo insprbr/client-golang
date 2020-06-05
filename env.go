@@ -13,6 +13,7 @@ type Env struct {
 	ChimeraOutputChannels string
 	ChimeraLogChannel     string
 	ChimeraEnvironment    string
+	ChimeraPrefix         string
 
 	KafkaBootstrapServers string
 	KafkaAutoOffsetReset  string
@@ -30,6 +31,7 @@ func GetEnvVars() *Env {
 		KafkaBootstrapServers: getEnv("KAFKA_BOOTSTRAP_SERVERS"),
 		KafkaAutoOffsetReset:  getEnv("KAFKA_AUTO_OFFSET_RESET"),
 		ChimeraEnvironment:    getEnv("CHIMERA_ENVIRONMENT"),
+		ChimeraPrefix:         getEnv("CHIMERA_PREFIX"),
 	}
 }
 func testEnvVars(
