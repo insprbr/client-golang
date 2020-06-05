@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"log"
 	"strings"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -108,7 +109,9 @@ func NewReader() (Reader, error) {
 	channelsToConsume := func() []string {
 		ret := []string{}
 		for _, s := range strings.Split(listOfChannels, ";") {
-			ret = append(ret, toTopic(s))
+			topic := toTopic(s)
+			log.Println(topic)
+			ret = append(ret, topic)
 		}
 		return ret
 	}()
