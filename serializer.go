@@ -1,10 +1,13 @@
 package client
 
 import (
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"gitlab.inspr.com/chimera/dev_sdk/meta"
 
 	"github.com/linkedin/goavro"
 )
@@ -28,10 +31,13 @@ func getSchema(ch channel) (*string, error) {
 		return nil, errors.New("[PARSE BODY] " + errDecodeBody.Error())
 	}
 	defer resp.Body.Close()
-
-	sBody := string(bBody)
-
-	return &sBody, nil
+	decodedBody := &meta.ChimeraHTTPResponse{}
+	err := json.Unmarshal(bBody, decodedBody)
+	if err != nil {
+		return nil, err
+	}
+	ret := decodedBody.Data.(string)
+	return &ret, nil
 }
 
 func getLogSchema() (*string, error) {
