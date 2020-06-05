@@ -65,7 +65,7 @@ func Test_toTopic(t *testing.T) {
 				"name",
 				testEnvVars("name", "namespace", "", "", "", "", "prefix"),
 			},
-			"chimera_prefix_namespace_name",
+			"chimera-prefix-namespace-name",
 		},
 		{
 			"Without prefix",
@@ -73,7 +73,7 @@ func Test_toTopic(t *testing.T) {
 				"name",
 				testEnvVars("name", "namespace", "", "", "", "", ""),
 			},
-			"chimera_namespace_name",
+			"chimera-namespace-name",
 		},
 	}
 	for _, tt := range tests {

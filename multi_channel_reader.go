@@ -1,7 +1,9 @@
 package client
 
 import (
+	"encoding/json"
 	"errors"
+	"log"
 	"strings"
 )
 
@@ -21,22 +23,24 @@ type multiChannelReader struct {
 // NewMultiChannelReader returns a multi channel reader.
 func NewMultiChannelReader() (MultiChannelReader, error) {
 	if mcr == nil {
+		log.Println("instantiating new multi channel reader")
 		mcr = &multiChannelReader{
 			map[string]Reader{},
 		}
 		envs = GetEnvVars()
+		log.Println("environment:")
+		prettyEnviron, _ := json.MarshalIndent(envs, "", "\t")
+		log.Println(prettyEnviron)
 		// Get channels to consume and subscribe
 		listOfChannels := envs.ChimeraInputChannels
 		if listOfChannels == "" {
 			return nil, errors.New("[ENV VAR] KAFKA_INPUT_CHANNELS not specified. ")
 		}
-		channelsToConsume := func() []string {
-			ret := []string{}
-			for _, s := range strings.Split(listOfChannels, ";") {
-				ret = append(ret, toTopic(s))
-			}
-			return ret
-		}()
+
+		channelsToConsume := strings.Split(listOfChannels, ";")
+		channelsToConsume = channelsToConsume[:len(channelsToConsume)-1]
+		log.Println("input channels:")
+		log.Println(channelsToConsume)
 		for _, c := range channelsToConsume {
 			var errReaderInstanciation error
 			mcr.readers[c], errReaderInstanciation = NewSingleChannelReader(c)
