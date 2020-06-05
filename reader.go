@@ -40,7 +40,6 @@ func (r *reader) ReadMessage() (*string, interface{}, error) {
 		default:
 			// TODO see the other way to read message from kafka
 			ev := r.consumer.Poll(100)
-			log.Println(ev)
 			switch e := ev.(type) {
 			case *kafka.Message:
 
@@ -119,6 +118,7 @@ func NewReader() (Reader, error) {
 		return ret
 	}()
 	r.consumer.SubscribeTopics(channelsToConsume, nil)
-
+	tpoics, _ := r.consumer.Subscription()
+	log.Println(tpoics)
 	return &r, nil
 }
