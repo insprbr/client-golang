@@ -48,6 +48,6 @@ func NewSingleChannelReader(channel string) (Reader, error) {
 		return nil, errors.New("invalid channel")
 	}
 
-	r.consumer.Subscribe(channel, nil)
+	r.consumer.Subscribe(toTopic(channel), nil)
 	return &r, nil
 }

@@ -63,8 +63,11 @@ github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+
 github.com/stretchr/testify v0.0.0-20151208002404-e3a8ff8ce365/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 gitlab.inspr.com/chimera/client-golang v1.0.0-beta-2-1/go.mod h1:GGPQJKBZVQFJ+7RokbZbg3+a2hDJTcWSGG4cqis2kYI=
+gitlab.inspr.com/chimera/client-golang v1.0.0-beta-6/go.mod h1:mBUIx0oatrYjIzuvbxkGPyP02z7pCt8kGJNRdPiWipg=
 gitlab.inspr.com/chimera/dev_sdk v1.0.0-beta-13-2 h1:N5C7m77s8JtiA3WhaGM0R15kj/nn04eHmVES3+Sim64=
 gitlab.inspr.com/chimera/dev_sdk v1.0.0-beta-13-2/go.mod h1:uI8O0NQMl9YalTmVdrs7IYNhzAs2oGSamHLV/NKRBHw=
+gitlab.inspr.com/chimera/dev_sdk v1.0.0-beta-14-1 h1:lZW8t0E31Qz6zolaGfo9aw7zQfjNTI1V9TrzGdwzrlI=
+gitlab.inspr.com/chimera/dev_sdk v1.0.0-beta-14-1/go.mod h1:Sd3f4w75J+GJR9qW+mSU9bFl8aYrRxbkqOCwUQJN5RI=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/net v0.0.0-20170114055629-f2499483f923/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/net v0.0.0-20180906233101-161cd47e91fd/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
