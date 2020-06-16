@@ -82,14 +82,14 @@ Just after the client read message, it is decoded according to the specified sch
 // New Reader instance
 reader, errNewReader := client.NewReader()
 if errNewReader != nil {
-		log.Fatal("[INSTANTIATING NEW READER] " + errNewReader.Error())
+    log.Fatal("[INSTANTIATING NEW READER] " + errNewReader.Error())
 }
 
 // Reading message
 msgChannel, msg, errReadMessage := reader.ReadMessage()
 log.Println(*msgChannel)
 if errReadMessage != nil {
-	log.Fatal("[READ MESSAGE] " + errReadMessage.Error())
+    log.Fatal("[READ MESSAGE] " + errReadMessage.Error())
 }
 ```
 
@@ -101,19 +101,19 @@ The Writer consist in a single functionality to write a message in a desired, al
 // New Writer instance
 writer, err = client.NewWriter()
 if err != nil {
-	log.Panicln(err)
+    log.Panicln(err)
 }
 
 // message
 user_info_interface = map[string]interface{}{
-		"name":      "user_name",
-		"age":       18,
-		"Gender"     "male"
+    "name":      "user_name",
+    "age":       18,
+    "Gender"     "male"
 }
 
 // Writing message on channel target_channel
 err := writer.WriteMessage(user_info_interface, "target_channel")
 if err != nil {
-	log.Panicln(err)
+    log.Panicln(err)
 }
 ```
