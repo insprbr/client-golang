@@ -1,23 +1,27 @@
 package client
 
 import (
+	"encoding/json"
 	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
 
+	"gitlab.inspr.com/chimera/dev_sdk/meta"
+
 	"github.com/linkedin/goavro"
 )
 
-func getSchema(channel string) (*string, error) {
+func getSchema(ch channel) (*string, error) {
 
 	// Getting schema
-	resp, errGetSchema := http.Get(envs.chimeraRegistryURL + "/schema/" + envs.chimeraNamespace + "/" + channel)
+	resp, errGetSchema := http.Get(envs.ChimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
 	if errGetSchema != nil {
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] " + errGetSchema.Error())
 	}
 	if resp.StatusCode != 200 {
-		log.Println(envs.chimeraRegistryURL + "/schema/" + envs.chimeraNamespace + "/" + channel)
+		log.Println(envs.ChimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
+		log.Println(resp.StatusCode)
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] Schema not registered. ")
 	}
 	defer resp.Body.Close()
@@ -27,16 +31,19 @@ func getSchema(channel string) (*string, error) {
 		return nil, errors.New("[PARSE BODY] " + errDecodeBody.Error())
 	}
 	defer resp.Body.Close()
-
-	sBody := string(bBody)
-
-	return &sBody, nil
+	decodedBody := &meta.ChimeraHTTPResponse{}
+	err := json.Unmarshal(bBody, decodedBody)
+	if err != nil {
+		return nil, err
+	}
+	ret := decodedBody.Data.(string)
+	return &ret, nil
 }
 
 func getLogSchema() (*string, error) {
 
 	// Getting schema
-	resp, errGetSchema := http.Get(envs.chimeraRegistryURL + "/schema/" + "chimera" + "/" + "log")
+	resp, errGetSchema := http.Get(envs.ChimeraRegistryURL + "/schema/" + "chimera" + "/" + "log")
 	if errGetSchema != nil {
 		return nil, errors.New("[KAFKA_PRODUCE_SCHEMA] " + errGetSchema.Error())
 	}
@@ -67,10 +74,10 @@ func getCodec(schema string) (*goavro.Codec, error) {
 	return codec, nil
 }
 
-func decode(messageEncoded []byte, channel string) (interface{}, error) {
+func decode(messageEncoded []byte, ch channel) (interface{}, error) {
 
-	// Get schema from channel
-	schema, errGetSchema := getSchema(channel[len(envs.chimeraNamespace)+1:])
+	// Get schema from ch
+	schema, errGetSchema := getSchema(ch)
 	if errGetSchema != nil {
 		return nil, errGetSchema
 	}
@@ -93,10 +100,10 @@ func decode(messageEncoded []byte, channel string) (interface{}, error) {
 	return message, nil
 }
 
-func encode(message interface{}, channel string) ([]byte, error) {
+func encode(message interface{}, ch channel) ([]byte, error) {
 
-	// Get schema from channel
-	schema, errGetSchema := getSchema(channel)
+	// Get schema from ch
+	schema, errGetSchema := getSchema(ch)
 	if errGetSchema != nil {
 		return nil, errGetSchema
 	}

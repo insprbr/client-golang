@@ -2,6 +2,7 @@ package client
 
 import (
 	"errors"
+	"log"
 	"strings"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -43,9 +44,9 @@ func (r *reader) ReadMessage() (*string, interface{}, error) {
 			case *kafka.Message:
 
 				channel := *e.TopicPartition.Topic
-
+				log.Println("reading message from channel " + channel)
 				// Decoding Message
-				message, errDecode := decode(e.Value, channel)
+				message, errDecode := decode(e.Value, fromTopic(channel))
 				if errDecode != nil {
 					return nil, nil, errDecode
 				}
@@ -64,6 +65,8 @@ func (r *reader) ReadMessage() (*string, interface{}, error) {
 				if e.Code() == kafka.ErrAllBrokersDown {
 					return nil, nil, errors.New("[FATAL_ERROR]\n===== All brokers are down! =====\n" + e.Error())
 				}
+				log.Println(e)
+
 			default:
 				continue
 			}
@@ -78,14 +81,14 @@ func (r *reader) Close() {
 
 // NewReader returns a new reader
 func NewReader() (Reader, error) {
-	envs = getEnvVars()
+	envs = GetEnvVars()
 	// Reader consumer Client
 	var r reader
 
 	newConsumer, errKafkaConsumer := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers":  envs.kafkaBootstrapServers,
-		"group.id":           envs.chimeraNodeID,
-		"auto.offset.reset":  envs.kafkaAutoOffsetReset,
+		"bootstrap.servers":  envs.KafkaBootstrapServers,
+		"group.id":           envs.ChimeraNodeID,
+		"auto.offset.reset":  envs.KafkaAutoOffsetReset,
 		"enable.auto.commit": false,
 	})
 	if errKafkaConsumer != nil {
@@ -101,18 +104,23 @@ func NewReader() (Reader, error) {
 	r.logger = newLogger
 
 	// Get channels to consume and subscribe
-	listOfChannels := envs.chimeraInputChannels
+	listOfChannels := envs.ChimeraInputChannels
 	if listOfChannels == "" {
 		return nil, errors.New("[ENV VAR] KAFKA_INPUT_CHANNELS not specified. ")
 	}
+	channelList := strings.Split(listOfChannels, ";")
+	channelList = channelList[:len(channelList)-1]
 	channelsToConsume := func() []string {
 		ret := []string{}
-		for _, s := range strings.Split(listOfChannels, ";") {
-			ret = append(ret, envs.chimeraNamespace+"_"+s)
+		for _, s := range channelList {
+			topic := toTopic(s)
+			log.Println(topic)
+			ret = append(ret, topic)
 		}
 		return ret
 	}()
 	r.consumer.SubscribeTopics(channelsToConsume, nil)
-
+	tpoics, _ := r.consumer.Subscription()
+	log.Println(tpoics)
 	return &r, nil
 }

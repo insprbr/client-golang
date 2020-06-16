@@ -3,8 +3,7 @@ module gitlab.inspr.com/chimera/client-golang
 go 1.13
 
 require (
-	github.com/confluentinc/confluent-kafka-go v1.1.0
-	github.com/golang/snappy v0.0.1 // indirect
+	github.com/confluentinc/confluent-kafka-go v1.4.2
 	github.com/linkedin/goavro v2.1.0+incompatible
-	gopkg.in/linkedin/goavro.v1 v1.0.5 // indirect
+	gitlab.inspr.com/chimera/dev_sdk v1.0.0-beta-14-1
 )
