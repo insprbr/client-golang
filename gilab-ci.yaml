@@ -1,0 +1,29 @@
+stages:
+    - build
+    - test
+		- deploy
+
+.base-client:
+	image: pedrotavares1998/chimera-ci:v0.0.1
+
+client:build:build:
+	stage: build
+	script: make build
+	allow_failure: false
+	extends: 
+		- .go-cache
+		- .base-client
+			
+client:test:lint:
+	stage: test
+	script: make lint
+	allow_failure: true
+	extends: .base-client
+
+cli:deploy:deploy:
+	stage: deploy
+	script: make deploy
+	only:
+		refs:
+			- master
+	extends: .base-client
