@@ -6,7 +6,7 @@ MODULE_NAME:=client-golang
 
 .PHONY: build
 build:
-	@go build -o $(MODULE_NAME)
+	@go build -o $(MODULE_NAME) -flags musl
 
 .PHONY: lint
 lint:
