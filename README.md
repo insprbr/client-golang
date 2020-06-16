@@ -67,7 +67,7 @@ See more:
 [https://avro.apache.org/docs/current/index.html](https://avro.apache.org/docs/current/index.html)
 
 # Usage
-[![Godoc](https://godoc.org/github.com/insprbr/client-golang?status.svg)(https://godoc.org/github.com/insprbr/client-golang)]
+[![Godoc](https://godoc.org/github.com/insprbr/client-golang?status.svg)](https://godoc.org/github.com/insprbr/client-golang)
 
 Reader and writer examples
 
