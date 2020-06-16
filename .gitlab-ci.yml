@@ -21,7 +21,6 @@ client:build:build:
   script: make build
   allow_failure: false
 
-      
 client:test:lint:
   stage: test
   script: make lint
