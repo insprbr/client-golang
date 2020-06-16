@@ -1,4 +1,4 @@
-image: inspr/ci-sr:0.3
+image: pedrotavares1998/chimera-ci:v0.0.1
 # Definitions
 #-------------------------------------------------------------------------------
 # This folder is cached between builds
@@ -16,21 +16,16 @@ variables:
   DOCKER_DRIVER: overlay2
   DOCKER_TLS_CERTDIR: ""
 
-.base-client:
-  image: pedrotavares1998/chimera-ci:v0.0.1
-
 client:build:build:
   stage: build
   script: make build
   allow_failure: false
-  extends: 
-    - .base-client
+
       
 client:test:lint:
   stage: test
   script: make lint
   allow_failure: true
-  extends: .base-client
 
 cli:deploy:deploy:
   stage: deploy
@@ -38,4 +33,3 @@ cli:deploy:deploy:
   only:
     refs:
       - master
-  extends: .base-client
