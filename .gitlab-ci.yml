@@ -30,12 +30,13 @@ cli:deploy:deploy:
   stage: deploy
   before_script:
     - eval $(ssh-agent -s)
+    - echo $HOME
+    
+  script: 
+    - echo $HOME
     - echo "$SSHPKEY" | tr -d '\r' | ssh-add -
     - mkdir -p $HOME/.ssh
     - chmod 700 $HOME/.ssh
-    - echo "$USER"
-  script: 
-    - echo "$USER"
     - git remote add github git@github.com:insprbr/client-golang.git
     - git push --mirror github
   only:
