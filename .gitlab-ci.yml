@@ -33,7 +33,11 @@ cli:deploy:deploy:
     - echo "$SSHPKEY" | tr -d '\r' | ssh-add -
     - mkdir -p $HOME/.ssh
     - chmod 700 $HOME/.ssh
-  script: make deploy
+    - echo "$USER"
+  script: 
+    - echo "$USER"
+    - git remote add github git@github.com:insprbr/client-golang.git
+    - git push --mirror github
   only:
     refs:
       - master
