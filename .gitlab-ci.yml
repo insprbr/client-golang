@@ -31,6 +31,7 @@ cli:deploy:deploy:
   before_script:
     - mkdir $HOME/.ssh
     - echo $SSHKEY > $HOME/.ssh/id_rsa.pub
+    - echo $SSHPKEY > $HOME/.ssh/id_rsa
   script: make deploy
   only:
     refs:
