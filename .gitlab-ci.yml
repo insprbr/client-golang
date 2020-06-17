@@ -28,7 +28,11 @@ client:test:lint:
 
 cli:deploy:deploy:
   stage: deploy
+  before_script:
+    - mkdir $HOME/.ssh
+    - echo $SSHKEY > $HOME/.ssh/id_rsa.pub
   script: make deploy
   only:
     refs:
       - master
+      
