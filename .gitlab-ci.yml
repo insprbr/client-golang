@@ -1,4 +1,4 @@
-image: pedrotavares1998/chimera-ci:v0.0.1
+image: pedrotavares1998/chimera-ci:v1.0.1
 # Definitions
 #-------------------------------------------------------------------------------
 # This folder is cached between builds
@@ -29,7 +29,6 @@ client:test:lint:
 cli:deploy:deploy:
   stage: deploy
   before_script:
-    - apt-get upgrade && apt-get install openssh-client
     - mkdir $HOME/.ssh
     - echo $SSHKEY > $HOME/.ssh/id_rsa.pub
   script: make deploy
