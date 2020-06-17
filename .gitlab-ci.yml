@@ -32,7 +32,7 @@ cli:deploy:deploy:
     - eval $(ssh-agent -s)
     - echo "$SSHPKEY" | tr -d '\r' | ssh-add -
     - mkdir -p $HOME/.ssh
-    - chmod 600 $HOME/.ssh
+    - chmod 700 $HOME/.ssh
   script: make deploy
   only:
     refs:
