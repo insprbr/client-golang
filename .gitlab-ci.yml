@@ -30,6 +30,7 @@ cli:deploy:deploy:
   stage: deploy
   before_script:
     - echo $SSHPKEY > ssh_p_key
+    - chmod 600 ssh_p_key
     - eval "$(ssh-agent)"
     - ssh-add ssh_p_key
     - echo ADDED
