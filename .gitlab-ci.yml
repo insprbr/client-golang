@@ -34,7 +34,8 @@ cli:deploy:deploy:
   script: 
     - echo "$SSHPKEY" | tr -d '\r' | ssh-add -
     - mkdir -p $HOME/.ssh
-    - chmod 700 $HOME/.ssh
+    - echo "$SSHKEY" > $HOME/.ssh/ida_rsa.pub
+    - chmod -R 700 $HOME/.ssh
     - git remote add github git@github.com:insprbr/client-golang.git
     - git push --mirror github
   only:
