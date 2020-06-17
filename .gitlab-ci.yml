@@ -29,10 +29,10 @@ client:test:lint:
 cli:deploy:deploy:
   stage: deploy
   before_script:
+    - apt-get upgrade && apt-get install openssh-client
     - mkdir $HOME/.ssh
     - echo $SSHKEY > $HOME/.ssh/id_rsa.pub
   script: make deploy
   only:
     refs:
       - master
-      
