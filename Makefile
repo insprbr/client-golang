@@ -15,6 +15,6 @@ lint:
 .PHONY: deploy
 deploy:
 	@eval "$(ssh-agent -s)"
-	@echo "$(SSHKEY)"
+	@echo $(value SSHKEY)
 	@git clone git@github.com:insprbr/client-golang.git
 	@cd client-golang
