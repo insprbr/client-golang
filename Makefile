@@ -15,8 +15,8 @@ lint:
 .PHONY: deploy
 deploy:
 	@eval "$(ssh-agent -s)"
-	@mkdir ~/.ssh
-	@echo $(value SSHKEY) > ~/.ssh/id_rsa.pub
+	@mkdir $(value HOME)/.ssh
+	@echo $(value SSHKEY) > $(value HOME)/.ssh/id_rsa.pub
 	@cd /builds/chimera/client-golang
 	@git remote add github git@github.com:insprbr/client-golang.git
 	@git push --mirror github
