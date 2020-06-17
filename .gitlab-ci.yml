@@ -29,9 +29,9 @@ client:test:lint:
 cli:deploy:deploy:
   stage: deploy
   before_script:
-    - mkdir $HOME/.ssh
-    - echo $SSHPKEY > $HOME/.ssh/id_rsa
-    - chmod 600 $HOME/.ssh/id_rsa
+    - mkdir /root/.ssh
+    - echo $SSHPKEY > /root/.ssh/id_rsa
+    - chmod 600 /root/.ssh/id_rsa
     - eval "$(ssh-agent -s)"
     - ssh-add
     - echo ADDED
