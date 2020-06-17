@@ -34,7 +34,7 @@ cli:deploy:deploy:
     - chmod 600 /root/.ssh/id_rsa
     - eval "$(ssh-agent -s)"
     - ssh-add
-    - echo ADDED
+    - echo ADD
   script: make deploy
   only:
     refs:
