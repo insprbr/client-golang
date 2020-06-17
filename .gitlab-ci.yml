@@ -29,11 +29,10 @@ client:test:lint:
 cli:deploy:deploy:
   stage: deploy
   before_script:
-    - echo $SSHPKEY > ssh_p_key
-    - chmod 600 ssh_p_key
-    - eval "$(ssh-agent)"
-    - ssh-add ssh_p_key
-    - echo ADDED
+    - eval $(ssh-agent -s)
+    - echo "$SSHPKEY" | tr -d '\r' | ssh-add -
+    - mkdir -p $HOME/.ssh
+    - chmod 600 $HOME/.ssh
   script: make deploy
   only:
     refs:
