@@ -1,4 +1,4 @@
-image: pedrotavares1998/chimera-ci:v1.0.1
+image: pedrotavares1998/chimera-ci:v1.0.0
 # Definitions
 #-------------------------------------------------------------------------------
 # This folder is cached between builds
