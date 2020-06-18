@@ -1,3 +1,6 @@
+## 1.0.0-beta-8 (junho 18, 2020)
+  - fix: updates data type to fit registry API
+
 ## 1.0.0-beta-7 (junho 08, 2020)
   - fix: fixes subscription method for single channel reader
   - debug: adds logging
