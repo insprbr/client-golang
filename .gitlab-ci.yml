@@ -1,0 +1,43 @@
+image: pedrotavares1998/chimera-ci:v1.0.1
+# Definitions
+#-------------------------------------------------------------------------------
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DANGER_GITLAB_HOST: "https://gitlab.inspr.com"
+  DANGER_GITLAB_API_BASE_URL: "https://gitlab.inspr.com/api/v4"
+  DOCKER_HOST: tcp://localhost:2375/
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+client:build:build:
+  stage: build
+  script: make build
+  allow_failure: false
+
+client:test:lint:
+  stage: test
+  script: make lint
+  allow_failure: true
+
+cli:deploy:deploy:
+  stage: deploy
+  before_script:
+    - eval $(ssh-agent -s)
+    
+  script: 
+    - echo "$SSHPKEY" | tr -d '\r' | ssh-add -
+    - mkdir -p $HOME/.ssh
+    - ssh-keyscan -H github.com >> $HOME/.ssh/known_hosts
+    - chmod -R 700 $HOME/.ssh
+    - git remote add github git@github.com:insprbr/client-golang.git
+    - git push --mirror github
+  only:
+    refs:
+      - master
