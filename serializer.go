@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"gitlab.inspr.com/chimera/dev_sdk/meta"
+	"gitlab.inspr.com/chimera/chimera/sdk/registry"
 
 	"github.com/linkedin/goavro"
 )
@@ -31,12 +31,12 @@ func getSchema(ch channel) (*string, error) {
 		return nil, errors.New("[PARSE BODY] " + errDecodeBody.Error())
 	}
 	defer resp.Body.Close()
-	decodedBody := &meta.ChimeraHTTPResponse{}
+	decodedBody := &registry.ChimeraHTTPSchemaResponse{}
 	err := json.Unmarshal(bBody, decodedBody)
 	if err != nil {
 		return nil, err
 	}
-	ret := decodedBody.Data.(string)
+	ret := decodedBody.Schema
 	return &ret, nil
 }
 
