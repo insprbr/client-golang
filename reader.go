@@ -58,8 +58,8 @@ func (r *reader) ReadMessage() (*string, interface{}, error) {
 				}
 
 				r.lastMessage = e
-
-				return &channel, message, nil
+				channelName := fromTopic(channel).name
+				return &channelName, message, nil
 
 			case kafka.Error:
 				if e.Code() == kafka.ErrAllBrokersDown {
