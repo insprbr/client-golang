@@ -13,7 +13,7 @@ import (
 )
 
 func getSchema(ch channel) (*string, error) {
-
+	log.Println(ch.name)
 	// Getting schema
 	resp, errGetSchema := http.Get(envs.ChimeraRegistryURL + "/schema/" + ch.namespace + "/" + ch.name)
 	if errGetSchema != nil {
@@ -77,13 +77,13 @@ func getCodec(schema string) (*goavro.Codec, error) {
 func decode(messageEncoded []byte, ch channel) (interface{}, error) {
 
 	// Get schema from ch
-	schema, errGetSchema := getSchema(ch)
+	schema, errGetSchema := registry.NewClient().GetSchema(ch.name, ch.namespace)
 	if errGetSchema != nil {
 		return nil, errGetSchema
 	}
 
 	// Get codec from schema
-	codec, errCreateCodec := getCodec(*schema)
+	codec, errCreateCodec := getCodec(schema)
 	if errCreateCodec != nil {
 		return nil, errCreateCodec
 	}
@@ -103,13 +103,13 @@ func decode(messageEncoded []byte, ch channel) (interface{}, error) {
 func encode(message interface{}, ch channel) ([]byte, error) {
 
 	// Get schema from ch
-	schema, errGetSchema := getSchema(ch)
+	schema, errGetSchema := registry.NewClient().GetSchema(ch.name, ch.namespace)
 	if errGetSchema != nil {
 		return nil, errGetSchema
 	}
 
 	// Get codec from schema
-	codec, errCreateCodec := getCodec(*schema)
+	codec, errCreateCodec := getCodec(schema)
 	if errCreateCodec != nil {
 		return nil, errCreateCodec
 	}
